@@ -1,38 +1,51 @@
-{% set version = "0.2.5" %}
+{% set name = "wcwidth" %}
+{% set version = "0.2.13" %}
 
 package:
-  name: wcwidth
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/w/wcwidth/wcwidth-{{ version }}.tar.gz
-  sha256: c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/wcwidth-{{ version }}.tar.gz
+  sha256: 72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5
 
 build:
   number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - python
     - pip
+    - setuptools
+    - wheel
   run:
     - python
 
 test:
+  source_files:
+    - tests
+    - bin/verify-table-integrity.py  # [py>311]
   imports:
     - wcwidth
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v tests
   requires:
     - pip
+    - pytest >=7.4.2
 
 about:
   home: https://github.com/jquast/wcwidth
-  license: MIT
-  license_file: LICENSE
   summary: Measures number of Terminal column cells of wide-character codes.
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  description: This library is mainly for CLI programs that carefully produce output for Terminals, or make pretend to be an emulator.
+  doc_url: https://github.com/jquast/wcwidth/blob/master/docs/intro.rst
+  dev_url: https://github.com/jquast/wcwidth
+  
 
 extra:
   recipe-maintainers:
