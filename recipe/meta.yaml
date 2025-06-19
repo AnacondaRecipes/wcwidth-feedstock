@@ -25,6 +25,7 @@ requirements:
 test:
   source_files:
     - tests
+    - bin/verify-table-integrity.py  # [py>311]
   imports:
     - wcwidth
   commands:
@@ -37,9 +38,14 @@ test:
 
 about:
   home: https://github.com/jquast/wcwidth
-  license: MIT
-  license_file: LICENSE
   summary: Measures number of Terminal column cells of wide-character codes.
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  description: This library is mainly for CLI programs that carefully produce output for Terminals, or make pretend to be an emulator.
+  doc_url: https://github.com/jquast/wcwidth/blob/master/docs/intro.rst
+  dev_url: https://github.com/jquast/wcwidth
+  
 
 extra:
   recipe-maintainers:
