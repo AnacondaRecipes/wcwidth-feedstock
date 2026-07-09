@@ -1,25 +1,24 @@
 {% set name = "wcwidth" %}
-{% set version = "0.2.14" %}
+{% set version = "0.8.2" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/wcwidth-{{ version }}.tar.gz
-  sha256: 4d478375d31bc5395a3c55c40ccdf3354688364cd61c4f6adacaa9215d0b3605
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 91fbef97204b96a3d4d421609b80340b760cf33e26da123ff243d76b1fda8dda
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<36]
+  skip: true  # [py<38]
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - wheel
+    - hatchling
   run:
     - python
 
@@ -32,7 +31,7 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v tests
+    - pytest -vv tests
   requires:
     - pip
     - pytest >=7.4.2
