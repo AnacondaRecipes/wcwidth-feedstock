@@ -15,15 +15,15 @@ build:
   skip: true  # [py<39]
 
 requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ stdlib('c') }}
   host:
     - python
     - pip
-    - hatchling
     - setuptools >=61
   run:
     - python
-  build:
-    - {{ compiler('c') }}
 
 test:
   source_files:
