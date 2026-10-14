@@ -1,5 +1,5 @@
 {% set name = "wcwidth" %}
-{% set version = "0.8.2" %}
+{% set version = "0.9.2" %}
 
 package:
   name: {{ name }}
@@ -7,20 +7,23 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 91fbef97204b96a3d4d421609b80340b760cf33e26da123ff243d76b1fda8dda
+  sha256: ae0ef90b90f6af38b54f1fe6d58662ec33b3cb4b8391958a62416d654231727b
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<38]
+  skip: true  # [py<39]
 
 requirements:
   host:
     - python
     - pip
     - hatchling
+    - setuptools >=61
   run:
     - python
+  build:
+    - {{ compiler('c') }}
 
 test:
   source_files:
