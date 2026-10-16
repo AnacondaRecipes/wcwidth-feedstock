@@ -30,6 +30,9 @@ test:
     - tests
     - bin/verify-table-integrity.py  # [py>311]
     - bin/check-release.py
+    - setup.py
+    - pyproject.toml
+    - libwcwidth
   imports:
     - wcwidth
   commands:
