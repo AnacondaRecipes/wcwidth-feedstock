@@ -29,6 +29,7 @@ test:
   source_files:
     - tests
     - bin/verify-table-integrity.py  # [py>311]
+    - bin/check-release.py
   imports:
     - wcwidth
   commands:
