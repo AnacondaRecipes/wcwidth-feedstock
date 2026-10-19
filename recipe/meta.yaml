@@ -25,20 +25,27 @@ requirements:
   run:
     - python
 
+{% set ignore_tests = "" %}
+
+# exercises bin/check-release.py (upstream's cibuildwheel release gate), not shipped here
+{% set ignore_tests = ignore_tests + " --ignore=tests/test_check_release.py" %}
+# exercises setup.py directly (build-script unit tests), not shipped here
+{% set ignore_tests = ignore_tests + " --ignore=tests/test_setup.py" %}
+# checks pyproject.toml/libwcwidth source parity, not shipped here
+{% set ignore_tests = ignore_tests + " --deselect=tests/test_core.py::test_cmake_and_setuptools_source_lists_parity" %}
+{% set ignore_tests = ignore_tests + " --deselect=tests/test_core.py::test_version_matches_pyproject" %}
+{% set ignore_tests = ignore_tests + " --deselect=tests/test_core.py::test_version_matches_libwcwidth" %}
+
 test:
   source_files:
     - tests
     - bin/verify-table-integrity.py  # [py>311]
-    - bin/check-release.py
-    - setup.py
-    - pyproject.toml
-    - libwcwidth
   imports:
     - wcwidth
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -vv tests
+    - pytest -vv tests {{ ignore_tests }}
   requires:
     - pip
     - pytest >=7.4.2
