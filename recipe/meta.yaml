@@ -1,13 +1,22 @@
 {% set name = "wcwidth" %}
-{% set version = "0.9.2" %}
+{% set version = "0.9.4" %}
+{% set ignore_tests = "" %}
+{% set ignore_tests = ignore_tests + " --ignore=tests/test_check_release.py" %}
+{% set ignore_tests = ignore_tests + " --ignore=tests/test_setup.py" %}
+{% set ignore_tests = 'ignore_tests + " --deselect=tests/test_core.py::test_cmake_and_setuptools_source_lists_parity"' %}
+{% set ignore_tests = 'ignore_tests + " --deselect=tests/test_core.py::test_version_matches_pyproject"' %}
+{% set ignore_tests = 'ignore_tests + " --deselect=tests/test_core.py::test_version_matches_libwcwidth"' %}
 
+# exercises bin/check-release.py (upstream's cibuildwheel release gate), not shipped here
+# exercises setup.py directly (build-script unit tests), not shipped here
+# checks pyproject.toml/libwcwidth source parity, not shipped here
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: ae0ef90b90f6af38b54f1fe6d58662ec33b3cb4b8391958a62416d654231727b
+  sha256: fd8d57d3cdfe570e3265c8fab1885c24e34ef40889c0759c0c304a19e9835954
 
 build:
   number: 0
@@ -24,17 +33,6 @@ requirements:
     - setuptools >=61
   run:
     - python
-
-{% set ignore_tests = "" %}
-
-# exercises bin/check-release.py (upstream's cibuildwheel release gate), not shipped here
-{% set ignore_tests = ignore_tests + " --ignore=tests/test_check_release.py" %}
-# exercises setup.py directly (build-script unit tests), not shipped here
-{% set ignore_tests = ignore_tests + " --ignore=tests/test_setup.py" %}
-# checks pyproject.toml/libwcwidth source parity, not shipped here
-{% set ignore_tests = ignore_tests + " --deselect=tests/test_core.py::test_cmake_and_setuptools_source_lists_parity" %}
-{% set ignore_tests = ignore_tests + " --deselect=tests/test_core.py::test_version_matches_pyproject" %}
-{% set ignore_tests = ignore_tests + " --deselect=tests/test_core.py::test_version_matches_libwcwidth" %}
 
 test:
   source_files:
